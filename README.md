@@ -45,3 +45,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    Uses repos file: `$NAME$.repos`
 
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
+
+## Important Note
+
+The original `robotiq_driver` package has been ignored for now due to an open issue with a missing dependency (`serial`). The workaround is not compatible with ROS 2 setup. See [issue #21](https://github.com/PickNikRobotics/ros2_robotiq_gripper/issues/21) for details.

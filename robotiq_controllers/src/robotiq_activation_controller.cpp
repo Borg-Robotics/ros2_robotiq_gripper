@@ -105,21 +105,20 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn Roboti
 bool RobotiqActivationController::reactivateGripper(std_srvs::srv::Trigger::Request::SharedPtr /*req*/,
                                                     std_srvs::srv::Trigger::Response::SharedPtr resp)
 {
-  resp->success = command_interfaces_[REACTIVATE_GRIPPER_RESPONSE].set_value(ASYNC_WAITING);
-  resp->success &= command_interfaces_[REACTIVATE_GRIPPER_CMD].set_value(1.0);
+  command_interfaces_[REACTIVATE_GRIPPER_RESPONSE].set_value(ASYNC_WAITING);
+  command_interfaces_[REACTIVATE_GRIPPER_CMD].set_value(1.0);
+  resp->success = true;
 
   while (true)
   {
-    const auto maybe_value = command_interfaces_[REACTIVATE_GRIPPER_RESPONSE].get_optional();
-    if (maybe_value && maybe_value.value() != ASYNC_WAITING)
+    const auto value = command_interfaces_[REACTIVATE_GRIPPER_RESPONSE].get_value();
+    if (value != ASYNC_WAITING)
     {
       break;
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
-  // NOTE: This was previously using get_value() and implicitly casting to bool, so keeping the old behavior.
-  // However, note that the value of this result is actually a double, so this should be revised in the future.
-  resp->success &= static_cast<bool>(command_interfaces_[REACTIVATE_GRIPPER_RESPONSE].get_optional().value_or(false));
+  resp->success &= static_cast<bool>(command_interfaces_[REACTIVATE_GRIPPER_RESPONSE].get_value());
 
   return resp->success;
 }

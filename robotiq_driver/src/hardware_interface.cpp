@@ -73,11 +73,11 @@ RobotiqGripperHardwareInterface::RobotiqGripperHardwareInterface(std::unique_ptr
 }
 
 hardware_interface::CallbackReturn
-RobotiqGripperHardwareInterface::on_init(const hardware_interface::HardwareComponentInterfaceParams& params)
+RobotiqGripperHardwareInterface::on_init(const hardware_interface::HardwareInfo& info)
 {
   RCLCPP_DEBUG(kLogger, "on_init");
 
-  if (hardware_interface::SystemInterface::on_init(params) != CallbackReturn::SUCCESS)
+  if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS)
   {
     return CallbackReturn::ERROR;
   }

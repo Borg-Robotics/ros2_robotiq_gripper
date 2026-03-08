@@ -3,12 +3,21 @@
     <!-- parameters -->
     <xacro:arg name="use_fake_hardware" default="true" />
     <xacro:arg name="com_port" default="/dev/ttyUSB0" />
+    <xacro:arg name="sim_isaac" default="true" />
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="adapter_parent" default="world" />
+    <xacro:property name="adapter_parent" value="$(arg adapter_parent)" />
+    <xacro:property name="prefix" value="$(arg prefix)" />
 
     <!-- Import macros -->
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_adapter_macro.urdf.xacro" />
     <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
 
     <link name="world" />
-    <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="" parent="world" use_fake_hardware="$(arg use_fake_hardware)" com_port="$(arg com_port)">
-        <origin xyz="0 0 0" rpy="0 0 0" />
+    <xacro:robotiq_adapter prefix="$(arg prefix)" parent="$(arg adapter_parent)" child="robotiq_85_base_joint">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:robotiq_adapter>
+    <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="$(arg prefix)" parent="robotiq_link" use_fake_hardware="$(arg use_fake_hardware)" com_port="$(arg com_port)" sim_isaac="$(arg sim_isaac)">
+        <origin xyz="0 0 0.011" rpy="0 0 0" />
     </xacro:robotiq_gripper>
 </robot>

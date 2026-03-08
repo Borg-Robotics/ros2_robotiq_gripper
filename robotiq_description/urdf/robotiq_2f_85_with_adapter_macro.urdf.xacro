@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+    <!-- Import macros -->
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_adapter_macro.urdf.xacro" />
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+
+    <!--
+        Combined macro that mounts the Robotiq 2F-85 gripper (adapter + gripper)
+        onto a parent link.
+
+        Parameters:
+          prefix            - prefix applied to all link/joint names
+          adapter_parent    - link name to attach the adapter to
+          origin            - origin of the adapter relative to the parent link (default: 0 0 0, 0 0 0)
+          sim_isaac         - whether to use Isaac Sim ros2_control plugin
+          use_fake_hardware - whether to use fake hardware
+          com_port          - serial port for real hardware
+    -->
+    <xacro:macro name="robotiq_2f_85_gripper_with_adapter" params="
+        prefix
+        adapter_parent
+        *origin
+        sim_isaac:=false
+        use_fake_hardware:=false
+        com_port:=/dev/ttyUSB0">
+
+        <xacro:robotiq_adapter prefix="${prefix}" parent="${adapter_parent}" child="${prefix}robotiq_85_base_joint">
+            <xacro:insert_block name="origin"/>
+        </xacro:robotiq_adapter>
+
+        <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="${prefix}" parent="${prefix}robotiq_link"
+            use_fake_hardware="${use_fake_hardware}" com_port="${com_port}" sim_isaac="${sim_isaac}">
+            <origin xyz="0 0 0.011" rpy="0 0 0" />
+        </xacro:robotiq_gripper>
+
+    </xacro:macro>
+</robot>

@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="ur_to_robotiq" params="prefix parent child rotation:=^|${0.0}">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="robotiq_adapter">
+  <xacro:macro name="robotiq_adapter" params="
+  prefix
+  parent
+  child
+  *origin">
 
-    <joint name="${prefix}ur_to_robotiq_joint" type="fixed">
+    <joint name="${prefix}robotiq_joint" type="fixed">
       <!-- The parent link must be read from the robot model it is attached to. -->
       <parent link="${parent}"/>
-      <child link="${prefix}ur_to_robotiq_link"/>
-      <origin xyz="0 0 0" rpy="0 0 ${rotation}"/>
+      <child link="${prefix}robotiq_link"/>
+      <xacro:insert_block name="origin"/>
     </joint>
 
-    <link name="${prefix}ur_to_robotiq_link">
+    <link name="${prefix}robotiq_link">
         <visual>
           <origin xyz="0 0 0" rpy="0 0 0" />
           <geometry>
-            <mesh filename="package://robotiq_description/meshes/visual/2f_85/ur_to_robotiq_adapter.dae"/>
+            <mesh filename="package://robotiq_description/meshes/visual/2f_85/robotiq_adapter.dae"/>
           </geometry>
         </visual>
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0"/>
           <geometry>
-            <mesh filename="package://robotiq_description/meshes/collision/2f_85/ur_to_robotiq_adapter.stl"/>
+            <mesh filename="package://robotiq_description/meshes/collision/2f_85/robotiq_adapter.stl"/>
           </geometry>
         </collision>
         <inertial>
@@ -30,7 +34,7 @@
     </link>
 
     <joint name="${prefix}gripper_side_joint" type="fixed">
-      <parent link="${prefix}ur_to_robotiq_link"/>
+      <parent link="${prefix}robotiq_link"/>
       <child link="${child}"/>
       <!-- <origin xyz="0 0 0.011" rpy="0 ${-pi/2} ${pi/2}"/> -->
       <origin xyz="0 0 0.011" rpy="0 0 0"/>

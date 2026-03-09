@@ -33,4 +33,8 @@ add_executable(full_test
 )
 target_link_libraries(full_test robotiq_driver::robotiq_driver)
 
+install(TARGETS full_test
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()

@@ -13,6 +13,7 @@
         mock_sensor_commands:=false
         include_ros2_control:=true
         com_port:=/dev/ttyUSB0
+        slave_address:=0x9
         gripper_speed_multiplier:=1.0
         gripper_force_multiplier:=0.5
         gripper_max_speed:=0.150
@@ -33,6 +34,7 @@
                 use_fake_hardware="${use_fake_hardware}"
                 mock_sensor_commands="${mock_sensor_commands}"
                 com_port="${com_port}"
+                slave_address="${slave_address}"
                 gripper_speed_multiplier="${gripper_speed_multiplier}"
                 gripper_force_multiplier="${gripper_force_multiplier}"
                 gripper_max_speed="${gripper_max_speed}"

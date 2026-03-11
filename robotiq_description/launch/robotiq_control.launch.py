@@ -72,8 +72,15 @@ def generate_launch_description():
     args.append(
         launch.actions.DeclareLaunchArgument(
             name="com_port",
-            default_value="/dev/ttyUSB0",
+            default_value="/dev/robotiq_gripper_left",
             description="Port for communicating with Robotiq hardware",
+        )
+    )
+    args.append(
+        launch.actions.DeclareLaunchArgument(
+            name="slave_address",
+            default_value="0x1", #0x1 -> left gripper, 0x2 -> right gripper
+            description="Slave address for communicating with Robotiq hardware",
         )
     )
 
@@ -87,6 +94,9 @@ def generate_launch_description():
             " ",
             "com_port:=",
             LaunchConfiguration("com_port"),
+            " ",
+            "slave_address:=",
+            LaunchConfiguration("slave_address"),
         ]
     )
 

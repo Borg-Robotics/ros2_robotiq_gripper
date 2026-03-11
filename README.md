@@ -67,8 +67,8 @@ Each gripper must have a unique Modbus slave address. Our grippers are configure
 
 | Gripper | Symlink | FTDI Serial | Slave Address |
 |---------|---------|-------------|---------------|
-| Left Arm | `/dev/robotiq_gripper_left` | `BG018PFD` | `2` (`0x02`) |
-| Right Arm | `/dev/robotiq_gripper_right` | `BG03U2R5` | `1` (`0x01`) |
+| Left Arm | `/dev/robotiq_gripper_left` | `BG018PFD` | `1` (`0x01`) |
+| Right Arm | `/dev/robotiq_gripper_right` | `BG03U2R5` | `2` (`0x02`) |
 
 ### Testing the Grippers
 
@@ -83,12 +83,31 @@ Test each gripper individually:
 
 ```bash
 # Test left gripper
-ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_left --slave-address 2
+ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_left --slave-address 1
 
 # Test right gripper
-ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_right --slave-address 1
+ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_right --slave-address 2
 ```
 
+Test ROS2 Control of each gripper:
+
+```bash
+# Test left gripper with ROS2 Control
+ros2 launch robotiq_description robotiq_control.launch.py com_port:=/dev/robotiq_gripper_left slave_address:=0x1
+
+# Test right gripper with ROS2 Control
+ros2 launch robotiq_description robotiq_control.launch.py com_port:=/dev/robotiq_gripper_right slave_address:=0x2
+``` 
+
+Then you can send action goals to the gripper with:
+
+```bash
+# Send a close command (position = 0.7929 = fully closed)
+ros2 action send_goal /robotiq_gripper_controller/gripper_command control_msgs/action/GripperCommand "{command: {position: 0.7929, max_effort: 50.0}}"
+
+# Send an open command (position = 0.0 = fully open)
+ros2 action send_goal /robotiq_gripper_controller/gripper_command control_msgs/action/GripperCommand "{command: {position: 0.0, max_effort: 50.0}}"
+```
 A successful test will:
 1. Connect to the gripper
 2. Deactivate and reactivate the gripper

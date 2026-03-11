@@ -3,29 +3,21 @@ controller_manager:
     update_rate: 500  # Hz
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-    # Jazzy and newer: parallel_gripper_action_controller replaces gripper_controllers package
+    # https://control.ros.org/humble/doc/ros2_controllers/gripper_controllers/doc/userdoc.html
     robotiq_gripper_controller:
-      type: parallel_gripper_action_controller/GripperActionController
+      type: position_controllers/GripperActionController
     robotiq_activation_controller:
       type: robotiq_controllers/RobotiqActivationController
 
 robotiq_gripper_controller:
   ros__parameters:
     joint: robotiq_85_left_knuckle_joint
-
-    # Enable effort control (replacement for use_effort_interface)
-    max_effort_interface: "robotiq_85_left_knuckle_joint/effort"
-    max_effort: 50.0   # TODO tune
-
-    # Enable velocity/speed control (replacement for use_speed_interface)
-    max_velocity_interface: "robotiq_85_left_knuckle_joint/velocity"
-    max_velocity: 0.5    # TODO tune
-
-    # Optional (recommended)
-    state_interfaces: ["position", "velocity"]
-    allow_stalling: true
-    stall_timeout: 0.05
+    action_monitor_rate: 20.0
     goal_tolerance: 0.02
+    max_effort: 50.0
+    allow_stalling: true
+    stall_velocity_threshold: 0.001
+    stall_timeout: 0.3
 
 robotiq_activation_controller:
   ros__parameters:

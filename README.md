@@ -34,11 +34,11 @@ sudo nano /etc/udev/rules.d/99-robotiq-grippers.rules
 Add the following rules (replace the serial numbers with your own if different):
 
 ```
-# Robotiq 2F-85 Gripper - Left Arm (serial: BG018PFD)
-SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="BG018PFD", SYMLINK+="robotiq_gripper_left", MODE="0666"
+# Robotiq 2F-85 Gripper - Right Arm (serial: BG018PFD)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="BG018PFD", SYMLINK+="robotiq_gripper_right", MODE="0666"
 
-# Robotiq 2F-85 Gripper - Right Arm (serial: BG03U2R5)
-SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="BG03U2R5", SYMLINK+="robotiq_gripper_right", MODE="0666"
+# Robotiq 2F-85 Gripper - Left Arm (serial: BG03U2R5)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="BG03U2R5", SYMLINK+="robotiq_gripper_left", MODE="0666"
 ```
 
 Reload the udev rules and trigger them:
@@ -57,8 +57,8 @@ ls -la /dev/robotiq_gripper_*
 You should see:
 
 ```
-/dev/robotiq_gripper_left -> ttyUSB0
-/dev/robotiq_gripper_right -> ttyUSB1
+/dev/robotiq_gripper_left -> ttyUSB1
+/dev/robotiq_gripper_right -> ttyUSB0
 ```
 
 ### Gripper Modbus Slave Addresses
@@ -67,8 +67,8 @@ Each gripper must have a unique Modbus slave address. Our grippers are configure
 
 | Gripper | Symlink | FTDI Serial | Slave Address |
 |---------|---------|-------------|---------------|
-| Left Arm | `/dev/robotiq_gripper_left` | `BG018PFD` | `1` (`0x01`) |
-| Right Arm | `/dev/robotiq_gripper_right` | `BG03U2R5` | `2` (`0x02`) |
+| Left Arm | `/dev/robotiq_gripper_left` | `BG018PFD` | `2` (`0x02`) |
+| Right Arm | `/dev/robotiq_gripper_right` | `BG03U2R5` | `1` (`0x01`) |
 
 ### Testing the Grippers
 
@@ -83,20 +83,20 @@ Test each gripper individually:
 
 ```bash
 # Test left gripper
-ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_left --slave-address 1
+ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_left --slave-address 2
 
 # Test right gripper
-ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_right --slave-address 2
+ros2 run robotiq_hardware_tests full_test --port /dev/robotiq_gripper_right --slave-address 1
 ```
 
 Test ROS2 Control of each gripper:
 
 ```bash
 # Test left gripper with ROS2 Control
-ros2 launch robotiq_description robotiq_control.launch.py com_port:=/dev/robotiq_gripper_left slave_address:=0x1
+ros2 launch robotiq_description robotiq_control.launch.py com_port:=/dev/robotiq_gripper_left slave_address:=0x2
 
 # Test right gripper with ROS2 Control
-ros2 launch robotiq_description robotiq_control.launch.py com_port:=/dev/robotiq_gripper_right slave_address:=0x2
+ros2 launch robotiq_description robotiq_control.launch.py com_port:=/dev/robotiq_gripper_right slave_address:=0x1
 ``` 
 
 Then you can send action goals to the gripper with:

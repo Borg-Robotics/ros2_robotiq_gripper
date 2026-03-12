@@ -29,7 +29,7 @@
             <xacro:insert_block name="origin"/>
         </xacro:robotiq_adapter>
 
-        <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="${prefix}" parent="${prefix}robotiq_link"
+        <xacro:robotiq_gripper name="${prefix}RobotiqGripperHardwareInterface" prefix="${prefix}" parent="${prefix}robotiq_link"
             use_fake_hardware="${use_fake_hardware}" com_port="${com_port}" sim_isaac="${sim_isaac}" slave_address="${slave_address}">
             <origin xyz="0 0 0.011" rpy="0 0 0" />
         </xacro:robotiq_gripper>

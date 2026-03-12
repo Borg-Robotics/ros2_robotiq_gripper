@@ -17,7 +17,7 @@ robotiq_gripper_controller:
     max_effort: 50.0
     allow_stalling: true
     stall_velocity_threshold: 0.001
-    stall_timeout: 0.3
+    stall_timeout: 1.0
 
 robotiq_activation_controller:
   ros__parameters:

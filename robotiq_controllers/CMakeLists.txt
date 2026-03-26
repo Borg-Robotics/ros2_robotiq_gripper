@@ -9,6 +9,11 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(controller_interface REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   controller_interface
@@ -32,6 +37,19 @@ target_link_libraries(${PROJECT_NAME}
 
 pluginlib_export_plugin_description_file(controller_interface controller_plugins.xml)
 
+# Gripper action server executable (for Isaac Sim)
+add_executable(gripper_action_server
+  src/gripper_action_server.cpp
+)
+target_include_directories(gripper_action_server PRIVATE include)
+target_link_libraries(gripper_action_server
+  rclcpp::rclcpp
+  ${rclcpp_action_TARGETS}
+  ${control_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
+  ${std_msgs_TARGETS}
+)
+
 # # INSTALL
 install(
   TARGETS ${PROJECT_NAME}
@@ -39,6 +57,10 @@ install(
   ARCHIVE DESTINATION lib/${PROJECT_NAME}
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
+)
+install(
+  TARGETS gripper_action_server
+  DESTINATION lib/${PROJECT_NAME}
 )
 install(
   DIRECTORY include/

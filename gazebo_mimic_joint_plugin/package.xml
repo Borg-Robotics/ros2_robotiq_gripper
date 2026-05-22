@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>gazebo_mimic_joint_plugin</name>
+  <version>0.1.0</version>
+  <description>
+    Gazebo Classic model plugin that enforces URDF mimic joint constraints
+    in the physics engine. Required because Gazebo Classic silently ignores
+    the URDF mimic tag during URDF-to-SDF conversion.
+  </description>
+  <maintainer email="todo@todo.com">Borg Robotics</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>gazebo_dev</depend>
+  <depend>gazebo_ros</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <gazebo_ros gazebo_model_path="${prefix}/models" gazebo_plugin_path="${prefix}/lib"/>
+  </export>
+</package>

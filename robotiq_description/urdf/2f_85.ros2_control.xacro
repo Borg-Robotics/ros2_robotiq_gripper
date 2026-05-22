@@ -32,7 +32,7 @@
                     <param name="trigger_joint_command_threshold">0.02</param>
                 </xacro:if>
                 <xacro:if value="${sim_gazebo}">
-                    <plugin>ign_ros2_control/IgnitionSystem</plugin>
+                    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
                 </xacro:if>
                 <xacro:if value="${use_fake_hardware}">
                     <plugin>mock_components/GenericSystem</plugin>
@@ -60,37 +60,28 @@
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <!-- When simulating we need to include the rest of the gripper joints -->
+            <!-- When simulating we need to include the rest of the gripper joints.
+                 Gazebo Classic requires state interfaces so GazeboSystem registers mimic joints. -->
             <xacro:if value="${use_fake_hardware or sim_isaac or sim_gazebo}">
                 <joint name="${prefix}robotiq_85_right_knuckle_joint">
-                    <xacro:unless value="${sim_gazebo}">
-                        <state_interface name="position"/>
-                        <state_interface name="velocity"/>
-                    </xacro:unless>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
                 <joint name="${prefix}robotiq_85_left_inner_knuckle_joint">
-                    <xacro:unless value="${sim_gazebo}">
-                        <state_interface name="position"/>
-                        <state_interface name="velocity"/>
-                    </xacro:unless>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
                 <joint name="${prefix}robotiq_85_right_inner_knuckle_joint">
-                    <xacro:unless value="${sim_gazebo}">
-                        <state_interface name="position"/>
-                        <state_interface name="velocity"/>
-                    </xacro:unless>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
                 <joint name="${prefix}robotiq_85_left_finger_tip_joint">
-                    <xacro:unless value="${sim_gazebo}">
-                        <state_interface name="position"/>
-                        <state_interface name="velocity"/>
-                    </xacro:unless>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
                 <joint name="${prefix}robotiq_85_right_finger_tip_joint">
-                    <xacro:unless value="${sim_gazebo}">
-                        <state_interface name="position"/>
-                        <state_interface name="velocity"/>
-                    </xacro:unless>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
             </xacro:if>
 
